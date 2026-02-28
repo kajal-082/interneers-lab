@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from dotenv import load_dotenv
 import os
-from pymongo import MongoClient
 from pathlib import Path
 
 load_dotenv()
@@ -22,9 +21,6 @@ MONGO_PASS = os.getenv("MONGO_PASS", "example")
 MONGO_PORT = os.getenv("MONGO_PORT", "27019")
 MONGO_HOST = os.getenv("MONGO_HOST", "localhost")
 
-client = MongoClient(
-    f"mongodb://{MONGO_USER}:{MONGO_PASS}@{MONGO_HOST}:{MONGO_PORT}/?authSource=admin"
-)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -54,6 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "product",
+    "product_csr",
 ]
 
 MIDDLEWARE = [
@@ -134,3 +131,14 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+from mongoengine import connect
+
+connect(
+    db="product_db",
+    username=MONGO_USER,
+    password=MONGO_PASS,
+    host=MONGO_HOST,
+    port=int(MONGO_PORT),
+    authentication_source="admin"
+)

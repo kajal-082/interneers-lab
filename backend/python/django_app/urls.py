@@ -16,4 +16,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', hello_name),
     path('product/',include('product.urls')) ,
+    path('product-csr/',include('product_csr.urls'))
 ]
